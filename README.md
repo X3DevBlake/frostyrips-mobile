@@ -116,7 +116,7 @@
 
 #### Option B — Native SwiftUI `.ipa` Build (Xcode / GitHub Actions macOS Runner)
 1. Download **[`FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** or clone this repo and open [`ios/`](ios/) on macOS with Xcode 15+.
-2. Run `xcodegen generate` using [`ios/project.yml`](ios/project.yml) (or run the included macOS CI workflow [`ios/ci/build-ios-ipa.yml`](ios/ci/build-ios-ipa.yml)).
+2. Run `xcodegen generate` using [`ios/project.yml`](ios/project.yml) (or trigger the automated macOS CI workflow [`.github/workflows/build-ios-ipa.yml`](.github/workflows/build-ios-ipa.yml)).
 3. Select your Apple Developer Team in **Signing & Capabilities** and Archive for device deployment, TestFlight, or App Store Connect.
 
 ---
@@ -129,11 +129,12 @@ frostyrips-mobile/
 │   ├── src/com/frostyrips/app/  # MainActivity.java (WebGL2 WebView, FrostyNative JS bridge, deep links)
 │   ├── res/                     # Adaptive mipmap icons (mdpi–xxxhdpi), splash, theme, network config
 │   └── FrostyRips-v1.0.0.apk    # Signed & zipaligned production Android APK
+├── .github/workflows/
+│   └── build-ios-ipa.yml        # Automated macOS GitHub Actions workflow compiling FrostyRips-iOS.ipa
 ├── ios/                         # Native SwiftUI + WKWebView iOS app (iOS 15+)
 │   ├── Sources/                 # FrostyRipsApp.swift, FrostyWebView.swift (Core Haptics, Share & Presale bridge)
 │   ├── Resources/               # Info.plist, FrostyRips.entitlements, Assets.xcassets (AppIcon + SplashIcon)
 │   ├── project.yml              # XcodeGen specification for instant .xcodeproj / .ipa generation
-│   ├── ci/build-ios-ipa.yml     # Automated macOS GitHub Actions workflow for FrostyRips-iOS.ipa
 │   └── FrostyRips-iOS.mobileconfig # Direct 1-tap iOS WebClip installation profile
 ├── docs/media/                  # Real live screenshots, mobile app mockups, HD MP4 & animated GIF
 └── tools/make_demo_video.py     # Reproducible 720p30 H.264 + AAC walkthrough video generator
