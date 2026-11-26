@@ -19,6 +19,7 @@ struct FrostyRipsApp: App {
 final class FrostyAppRouter: ObservableObject {
     static let packsURL = URL(string: "https://frostrips.web.app/?app=ios&v=1.0.0")!
     static let stadiumURL = URL(string: "https://frostyrips-stadium.web.app/?app=ios&v=1.0.0")!
+    static let presaleURL = URL(string: "https://frostyrips-presale.web.app/?app=ios&v=1.0.0")!
 
     @Published var currentURL: URL = FrostyAppRouter.packsURL
     @Published var isLoading: Bool = true
@@ -28,6 +29,10 @@ final class FrostyAppRouter: ObservableObject {
         if url.scheme?.lowercased() == "frostyrips" {
             if url.host?.lowercased() == "stadium" {
                 currentURL = Self.stadiumURL
+                return
+            }
+            if url.host?.lowercased() == "presale" {
+                currentURL = Self.presaleURL
                 return
             }
             let path = url.path.isEmpty ? "/" : url.path
@@ -41,7 +46,9 @@ final class FrostyAppRouter: ObservableObject {
             return
         }
         if let host = url.host?.lowercased(),
-           host == "frostrips.web.app" || host == "frostyrips-stadium.web.app" {
+           host == "frostrips.web.app"
+            || host == "frostyrips-stadium.web.app"
+            || host == "frostyrips-presale.web.app" {
             currentURL = url
         }
     }

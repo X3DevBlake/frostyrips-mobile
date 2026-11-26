@@ -6,6 +6,7 @@
     <array>
         <string>applinks:frostrips.web.app</string>
         <string>applinks:frostyrips-stadium.web.app</string>
+        <string>applinks:frostyrips-presale.web.app</string>
     </array>
 </dict>
 </plist>

@@ -40,6 +40,9 @@ struct FrostyWebView: UIViewRepresentable {
           openPacks: function() {
             window.webkit.messageHandlers.frostyNative.postMessage({ action: 'openPacks' });
           },
+          openPresale: function() {
+            window.webkit.messageHandlers.frostyNative.postMessage({ action: 'openPresale' });
+          },
           getAppInfo: function() {
             return JSON.stringify({ platform: 'ios', version: '1.0.0', bundle: 'com.frostyrips.app' });
           }
@@ -109,6 +112,8 @@ struct FrostyWebView: UIViewRepresentable {
             if scheme == "frostyrips" {
                 if host == "stadium" {
                     webView.load(URLRequest(url: FrostyAppRouter.stadiumURL))
+                } else if host == "presale" {
+                    webView.load(URLRequest(url: FrostyAppRouter.presaleURL))
                 } else {
                     webView.load(URLRequest(url: FrostyAppRouter.packsURL))
                 }
@@ -119,6 +124,7 @@ struct FrostyWebView: UIViewRepresentable {
             if (scheme == "https" || scheme == "http") &&
                 (host.hasSuffix("frostrips.web.app")
                  || host.hasSuffix("frostyrips-stadium.web.app")
+                 || host.hasSuffix("frostyrips-presale.web.app")
                  || host.hasSuffix("firebaseapp.com")) {
                 decisionHandler(.allow)
                 return
@@ -151,6 +157,8 @@ struct FrostyWebView: UIViewRepresentable {
                 webView?.load(URLRequest(url: FrostyAppRouter.stadiumURL))
             case "openPacks":
                 webView?.load(URLRequest(url: FrostyAppRouter.packsURL))
+            case "openPresale":
+                webView?.load(URLRequest(url: FrostyAppRouter.presaleURL))
             case "share":
                 let text = dict["text"] as? String ?? "Claim a free FrostyRips Foil Pack!"
                 let urlStr = dict["url"] as? String ?? "https://frostrips.web.app/ad/landing/app"
@@ -160,6 +168,11 @@ struct FrostyWebView: UIViewRepresentable {
                     guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                           let rootVC = scene.windows.first?.rootViewController else { return }
                     let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
+                    if let pop = vc.popoverPresentationController {
+                        pop.sourceView = rootVC.view
+                        pop.sourceRect = CGRect(x: rootVC.view.bounds.midX, y: rootVC.view.bounds.midY, width: 0, height: 0)
+                        pop.permittedArrowDirections = []
+                    }
                     rootVC.present(vc, animated: true)
                 }
             default:

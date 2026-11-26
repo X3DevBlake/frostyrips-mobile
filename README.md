@@ -129,8 +129,9 @@ frostyrips-mobile/
 │   ├── src/com/frostyrips/app/  # MainActivity.java (WebGL2 WebView, FrostyNative JS bridge, deep links)
 │   ├── res/                     # Adaptive mipmap icons (mdpi–xxxhdpi), splash, theme, network config
 │   └── FrostyRips-v1.0.0.apk    # Signed & zipaligned production Android APK
-├── ios/                         # Native SwiftUI + WKWebView iOS app (iOS 16+)
-│   ├── FrostyRipsApp/           # SwiftUI app, FrostyWebView, Core Haptics & Share bridge, AppIcons
+├── ios/                         # Native SwiftUI + WKWebView iOS app (iOS 15+)
+│   ├── Sources/                 # FrostyRipsApp.swift, FrostyWebView.swift (Core Haptics, Share & Presale bridge)
+│   ├── Resources/               # Info.plist, FrostyRips.entitlements, Assets.xcassets (AppIcon + SplashIcon)
 │   ├── project.yml              # XcodeGen specification for instant .xcodeproj / .ipa generation
 │   ├── ci/build-ios-ipa.yml     # Automated macOS GitHub Actions workflow for FrostyRips-iOS.ipa
 │   └── FrostyRips-iOS.mobileconfig # Direct 1-tap iOS WebClip installation profile
