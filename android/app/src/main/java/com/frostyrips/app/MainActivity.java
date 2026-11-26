@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.TypedValue;
@@ -26,10 +27,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -47,16 +50,21 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private static final String PACKS_URL = "https://frostrips.web.app/?app=android&v=1.0.0";
-    private static final String STADIUM_URL = "https://frostyrips-stadium.web.app/?app=android&v=1.0.0";
+    private static final String APP_VERSION = "1.1.0";
+    private static final String PACKS_URL = "https://frostrips.web.app/?app=android&v=" + APP_VERSION;
+    private static final String STADIUM_URL = "https://frostyrips-stadium.web.app/?app=android&v=" + APP_VERSION;
+    private static final String PRESALE_URL = "https://frostyrips-presale.web.app/?app=android&v=" + APP_VERSION;
     private static final int FILE_CHOOSER_REQ = 4091;
 
+    private FrameLayout root;
     private WebView webView;
     private LinearLayout splashOverlay;
     private LinearLayout offlineOverlay;
     private ProgressBar topProgress;
+    private TextView returnToPacksPill;
     private boolean splashDismissed = false;
     private long lastBackPressMs = 0L;
+    private String lastLoadedUrl = PACKS_URL;
     private ValueCallback<Uri[]> filePathCallback;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -71,58 +79,121 @@ public class MainActivity extends Activity {
         win.setNavigationBarColor(Color.parseColor("#050A16"));
         win.getDecorView().setBackgroundColor(Color.parseColor("#050A16"));
 
-        FrameLayout root = new FrameLayout(this);
+        root = new FrameLayout(this);
         root.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         root.setBackgroundColor(Color.parseColor("#050A16"));
+        root.setFitsSystemWindows(true);
 
-        // 1. Hardware-Accelerated WebGL2 WebView
-        webView = new WebView(this);
-        webView.setLayoutParams(new FrameLayout.LayoutParams(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            root.setOnApplyWindowInsetsListener((v, insets) -> {
+                android.graphics.Insets sys = insets.getInsets(
+                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
+                v.setPadding(sys.left, sys.top, sys.right, sys.bottom);
+                return WindowInsets.CONSUMED;
+            });
+        }
+
+        // 1. Hardware-Accelerated WebView (default LAYER_TYPE_NONE so Chromium's native GPU compositor runs glitch-free)
+        webView = createConfiguredWebView();
+        root.addView(webView);
+
+        // 2. Slim Neon Cyan Top Progress Bar
+        topProgress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+        FrameLayout.LayoutParams progLp = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, dp(3));
+        progLp.gravity = Gravity.TOP;
+        topProgress.setLayoutParams(progLp);
+        topProgress.setMax(100);
+        topProgress.setProgressDrawable(createProgressDrawable());
+        root.addView(topProgress);
+
+        // 3. Sleek Floating Quick-Return Pill (shown only when inside fullscreen Stadium or Presale)
+        returnToPacksPill = buildReturnPill();
+        returnToPacksPill.setVisibility(View.GONE);
+        root.addView(returnToPacksPill);
+
+        // 4. Branded FrostyRips Offline Recovery Overlay
+        offlineOverlay = buildOfflineView();
+        offlineOverlay.setVisibility(View.GONE);
+        root.addView(offlineOverlay);
+
+        // 5. Native FrostyRips Splash Screen Overlay
+        splashOverlay = buildSplashView();
+        root.addView(splashOverlay);
+
+        setContentView(root);
+
+        // Failsafe dismiss splash after 3.2s even on slow cellular networks
+        mainHandler.postDelayed(this::dismissSplash, 3200);
+
+        String targetUrl = resolveInitialUrl(getIntent());
+        lastLoadedUrl = targetUrl;
+        if (isNetworkAvailable()) {
+            webView.loadUrl(targetUrl);
+        } else {
+            dismissSplash();
+            offlineOverlay.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    private WebView createConfiguredWebView() {
+        WebView wv = new WebView(this);
+        wv.setLayoutParams(new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-        webView.setBackgroundColor(Color.parseColor("#050A16"));
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        wv.setBackgroundColor(Color.parseColor("#050A16"));
+        // IMPORTANT: Do NOT call setLayerType(LAYER_TYPE_HARDWARE, null) on WebView —
+        // Chromium already hardware-accelerates via AndroidManifest; forcing HWUI layer causes WebGL flicker/tearing.
+        wv.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        wv.setHorizontalScrollBarEnabled(false);
 
-        WebSettings ws = webView.getSettings();
+        WebSettings ws = wv.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setDomStorageEnabled(true);
         ws.setDatabaseEnabled(true);
         ws.setMediaPlaybackRequiresUserGesture(false);
         ws.setUseWideViewPort(true);
         ws.setLoadWithOverviewMode(true);
+        ws.setTextZoom(100);
         ws.setAllowFileAccess(false);
         ws.setAllowContentAccess(true);
         ws.setSupportZoom(false);
         ws.setBuiltInZoomControls(false);
         ws.setDisplayZoomControls(false);
+        ws.setSupportMultipleWindows(true);
+        ws.setJavaScriptCanOpenWindowsAutomatically(true);
         ws.setCacheMode(WebSettings.LOAD_DEFAULT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ws.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         }
         String ua = ws.getUserAgentString();
-        ws.setUserAgentString(ua + " FrostyRipsApp/1.0.0 AndroidNative");
+        ws.setUserAgentString(ua + " FrostyRipsApp/" + APP_VERSION + " AndroidNative");
 
         CookieManager cm = CookieManager.getInstance();
         cm.setAcceptCookie(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cm.setAcceptThirdPartyCookies(webView, true);
+            cm.setAcceptThirdPartyCookies(wv, true);
         }
 
-        webView.addJavascriptInterface(new FrostyBridge(), "FrostyNative");
+        wv.addJavascriptInterface(new FrostyBridge(), "FrostyNative");
 
-        webView.setWebViewClient(new WebViewClient() {
+        wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Uri uri = request.getUrl();
+                Uri uri = request != null ? request.getUrl() : null;
                 return handleUri(uri);
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                if (url != null) {
+                    lastLoadedUrl = url;
+                    updateReturnPillVisibility(url);
+                }
                 offlineOverlay.setVisibility(View.GONE);
                 topProgress.setVisibility(View.VISIBLE);
             }
@@ -130,6 +201,10 @@ public class MainActivity extends Activity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if (url != null) {
+                    lastLoadedUrl = url;
+                    updateReturnPillVisibility(url);
+                }
                 topProgress.setVisibility(View.GONE);
                 dismissSplash();
             }
@@ -137,23 +212,77 @@ public class MainActivity extends Activity {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                if (request != null && request.isForMainFrame()) {
+                if (request == null || !request.isForMainFrame()) return;
+                int code = (error != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        ? error.getErrorCode() : WebViewClient.ERROR_UNKNOWN;
+                boolean isRealNetworkFailure =
+                        !isNetworkAvailable()
+                                || code == WebViewClient.ERROR_HOST_LOOKUP
+                                || code == WebViewClient.ERROR_CONNECT
+                                || code == WebViewClient.ERROR_TIMEOUT
+                                || code == WebViewClient.ERROR_IO
+                                || code == WebViewClient.ERROR_FAILED_SSL_HANDSHAKE;
+                if (isRealNetworkFailure) {
                     dismissSplash();
                     offlineOverlay.setVisibility(View.VISIBLE);
                 }
             }
+
+            @Override
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                // Gracefully recover if Android OOM-kills WebGL renderer in 3D Stadium instead of freezing black
+                if (root != null && webView != null) {
+                    root.removeView(webView);
+                    try {
+                        webView.destroy();
+                    } catch (Exception ignored) {
+                    }
+                    webView = createConfiguredWebView();
+                    root.addView(webView, 0);
+                    webView.loadUrl(lastLoadedUrl != null ? lastLoadedUrl : PACKS_URL);
+                }
+                return true;
+            }
         });
 
-        webView.setWebChromeClient(new WebChromeClient() {
+        wv.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 topProgress.setProgress(newProgress);
-                if (newProgress >= 75) {
+                if (newProgress >= 65) {
                     dismissSplash();
                 }
                 if (newProgress >= 100) {
                     topProgress.setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+                // Handle target="_blank" links cleanly (Presale, Fullscreen Stadium, external wallets)
+                WebView transportView = new WebView(MainActivity.this);
+                transportView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest req) {
+                        Uri u = req != null ? req.getUrl() : null;
+                        if (u != null) {
+                            if (isFirstPartyUri(u)) {
+                                webView.loadUrl(u.toString());
+                            } else {
+                                openExternalUri(u);
+                            }
+                        }
+                        try {
+                            v.destroy();
+                        } catch (Exception ignored) {
+                        }
+                        return true;
+                    }
+                });
+                WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+                transport.setWebView(transportView);
+                resultMsg.sendToTarget();
+                return true;
             }
 
             @Override
@@ -184,39 +313,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        root.addView(webView);
-
-        // 2. Slim Neon Cyan Top Progress Bar
-        topProgress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
-        FrameLayout.LayoutParams progLp = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, dp(3));
-        progLp.gravity = Gravity.TOP;
-        topProgress.setLayoutParams(progLp);
-        topProgress.setMax(100);
-        topProgress.setProgressDrawable(createProgressDrawable());
-        root.addView(topProgress);
-
-        // 3. Branded FrostyRips Offline Recovery Overlay
-        offlineOverlay = buildOfflineView();
-        offlineOverlay.setVisibility(View.GONE);
-        root.addView(offlineOverlay);
-
-        // 4. Native FrostyRips Splash Screen Overlay
-        splashOverlay = buildSplashView();
-        root.addView(splashOverlay);
-
-        setContentView(root);
-
-        // Failsafe dismiss splash after 4.5s even on slow mobile networks
-        mainHandler.postDelayed(this::dismissSplash, 4500);
-
-        String targetUrl = resolveInitialUrl(getIntent());
-        if (isNetworkAvailable()) {
-            webView.loadUrl(targetUrl);
-        } else {
-            dismissSplash();
-            offlineOverlay.setVisibility(View.VISIBLE);
-        }
+        return wv;
     }
 
     @Override
@@ -225,8 +322,35 @@ public class MainActivity extends Activity {
         setIntent(intent);
         String nextUrl = resolveInitialUrl(intent);
         if (webView != null && nextUrl != null) {
+            lastLoadedUrl = nextUrl;
             webView.loadUrl(nextUrl);
         }
+    }
+
+    private boolean isFirstPartyUri(Uri uri) {
+        if (uri == null) return false;
+        String scheme = uri.getScheme() != null ? uri.getScheme().toLowerCase() : "";
+        String host = uri.getHost() != null ? uri.getHost().toLowerCase() : "";
+        return ("https".equals(scheme) || "http".equals(scheme)) &&
+                (host.endsWith("frostrips.web.app")
+                        || host.endsWith("frostyrips-stadium.web.app")
+                        || host.endsWith("frostyrips-presale.web.app")
+                        || host.endsWith("firebaseapp.com"));
+    }
+
+    private void openExternalUri(Uri uri) {
+        try {
+            Intent ext = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(ext);
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void updateReturnPillVisibility(String url) {
+        if (returnToPacksPill == null || url == null) return;
+        boolean onSubApp = url.contains("frostyrips-stadium.web.app")
+                || url.contains("frostyrips-presale.web.app");
+        runOnUiThread(() -> returnToPacksPill.setVisibility(onSubApp ? View.VISIBLE : View.GONE));
     }
 
     private String resolveInitialUrl(Intent intent) {
@@ -238,15 +362,16 @@ public class MainActivity extends Activity {
                 if ("stadium".equalsIgnoreCase(host)) {
                     return STADIUM_URL;
                 }
+                if ("presale".equalsIgnoreCase(host)) {
+                    return PRESALE_URL;
+                }
                 String path = data.getPath() != null ? data.getPath() : "/";
                 String query = data.getEncodedQuery();
-                return "https://frostrips.web.app" + path + (query != null ? "?" + query + "&app=android" : "?app=android");
+                return "https://frostrips.web.app" + path
+                        + (query != null ? "?" + query + "&app=android&v=" + APP_VERSION : "?app=android&v=" + APP_VERSION);
             }
-            if ("https".equalsIgnoreCase(scheme)) {
-                String h = data.getHost();
-                if ("frostrips.web.app".equalsIgnoreCase(h) || "frostyrips-stadium.web.app".equalsIgnoreCase(h)) {
-                    return data.toString();
-                }
+            if (isFirstPartyUri(data)) {
+                return data.toString();
             }
         }
         return PACKS_URL;
@@ -260,26 +385,51 @@ public class MainActivity extends Activity {
         if ("frostyrips".equals(scheme)) {
             if ("stadium".equals(host)) {
                 webView.loadUrl(STADIUM_URL);
+            } else if ("presale".equals(host)) {
+                webView.loadUrl(PRESALE_URL);
             } else {
                 webView.loadUrl(PACKS_URL);
             }
             return true;
         }
 
-        if (("https".equals(scheme) || "http".equals(scheme)) &&
-                (host.endsWith("frostrips.web.app")
-                        || host.endsWith("frostyrips-stadium.web.app")
-                        || host.endsWith("firebaseapp.com"))) {
+        if (isFirstPartyUri(uri)) {
             return false;
         }
 
-        // Open external URLs (wallets, social, mailto, tel, checkout) in native chooser
-        try {
-            Intent ext = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(ext);
-        } catch (Exception ignored) {
-        }
+        openExternalUri(uri);
         return true;
+    }
+
+    private TextView buildReturnPill() {
+        TextView pill = new TextView(this);
+        pill.setText("← PACKS");
+        pill.setTextColor(Color.parseColor("#041521"));
+        pill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        pill.setTypeface(Typeface.DEFAULT_BOLD);
+        pill.setLetterSpacing(0.06f);
+        pill.setPadding(dp(12), dp(6), dp(12), dp(6));
+
+        GradientDrawable bg = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[]{Color.parseColor("#00FFF7"), Color.parseColor("#38BDF8")});
+        bg.setCornerRadius(dp(999));
+        bg.setStroke(dp(1), Color.parseColor("#040303"));
+        pill.setBackground(bg);
+        pill.setElevation(dp(8));
+
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.TOP | Gravity.START;
+        lp.topMargin = dp(10);
+        lp.leftMargin = dp(10);
+        pill.setLayoutParams(lp);
+        pill.setOnClickListener(v -> {
+            if (webView != null) {
+                webView.loadUrl(PACKS_URL);
+            }
+        });
+        return pill;
     }
 
     private LinearLayout buildSplashView() {
@@ -312,10 +462,10 @@ public class MainActivity extends Activity {
         box.addView(title);
 
         TextView sub = new TextView(this);
-        sub.setText("FOIL PACKS  •  FREE VAULT  •  3D STADIUM");
+        sub.setText("FOIL PACKS  •  $FROSTY PRESALE  •  3D STADIUM");
         sub.setTextColor(Color.parseColor("#7DD3FC"));
         sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-        sub.setLetterSpacing(0.12f);
+        sub.setLetterSpacing(0.10f);
         sub.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams subLp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -373,7 +523,7 @@ public class MainActivity extends Activity {
         retryBtn.setPadding(dp(28), dp(14), dp(28), dp(14));
         retryBtn.setOnClickListener(v -> {
             offlineOverlay.setVisibility(View.GONE);
-            webView.loadUrl(PACKS_URL);
+            webView.loadUrl(lastLoadedUrl != null ? lastLoadedUrl : PACKS_URL);
         });
         box.addView(retryBtn);
 
@@ -392,7 +542,7 @@ public class MainActivity extends Activity {
         splashDismissed = true;
         splashOverlay.animate()
                 .alpha(0f)
-                .setDuration(280)
+                .setDuration(240)
                 .withEndAction(() -> splashOverlay.setVisibility(View.GONE))
                 .start();
     }
@@ -451,6 +601,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        mainHandler.removeCallbacksAndMessages(null);
         if (webView != null) {
             webView.destroy();
         }
@@ -518,8 +669,13 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void openPresale() {
+            runOnUiThread(() -> webView.loadUrl(PRESALE_URL));
+        }
+
+        @JavascriptInterface
         public String getAppInfo() {
-            return "{\"platform\":\"android\",\"version\":\"1.0.0\",\"package\":\"com.frostyrips.app\"}";
+            return "{\"platform\":\"android\",\"version\":\"" + APP_VERSION + "\",\"package\":\"com.frostyrips.app\"}";
         }
     }
 }

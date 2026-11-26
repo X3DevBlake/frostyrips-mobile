@@ -7,6 +7,7 @@ struct FrostyWebView: UIViewRepresentable {
     let reloadToken: UUID
     @Binding var isLoading: Bool
     @Binding var loadFailed: Bool
+    @Binding var showBackToPacks: Bool
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -17,7 +18,8 @@ struct FrostyWebView: UIViewRepresentable {
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         config.websiteDataStore = .default()
-        config.applicationNameForUserAgent = "FrostyRipsApp/1.0.0 iOSNative"
+        config.applicationNameForUserAgent = "FrostyRipsApp/1.1.0 iOSNative"
+        config.preferences.javaScriptCanOpenWindowsAutomatically = true
 
         let controller = WKUserContentController()
         controller.add(context.coordinator, name: "frostyNative")
@@ -44,7 +46,7 @@ struct FrostyWebView: UIViewRepresentable {
             window.webkit.messageHandlers.frostyNative.postMessage({ action: 'openPresale' });
           },
           getAppInfo: function() {
-            return JSON.stringify({ platform: 'ios', version: '1.0.0', bundle: 'com.frostyrips.app' });
+            return JSON.stringify({ platform: 'ios', version: '1.1.0', bundle: 'com.frostyrips.app' });
           }
         };
         """
@@ -55,10 +57,15 @@ struct FrostyWebView: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         webView.allowsBackForwardNavigationGestures = true
-        webView.isOpaque = false
+        webView.isOpaque = true
         webView.backgroundColor = UIColor(red: 5/255, green: 10/255, blue: 22/255, alpha: 1)
         webView.scrollView.backgroundColor = UIColor(red: 5/255, green: 10/255, blue: 22/255, alpha: 1)
-        webView.scrollView.contentInsetAdjustmentBehavior = .automatic
+        webView.scrollView.bounces = false
+        webView.scrollView.alwaysBounceHorizontal = false
+        webView.scrollView.showsHorizontalScrollIndicator = false
+        webView.scrollView.decelerationRate = .normal
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        webView.scrollView.pinchGestureRecognizer?.isEnabled = false
 
         context.coordinator.webView = webView
         webView.load(URLRequest(url: url))
@@ -85,7 +92,30 @@ struct FrostyWebView: UIViewRepresentable {
             self.lastReloadToken = parent.reloadToken
         }
 
+        private func isFirstParty(_ target: URL) -> Bool {
+            let scheme = (target.scheme ?? "").lowercased()
+            let host = (target.host ?? "").lowercased()
+            return (scheme == "https" || scheme == "http") &&
+                (host.hasSuffix("frostrips.web.app")
+                 || host.hasSuffix("frostyrips-stadium.web.app")
+                 || host.hasSuffix("frostyrips-presale.web.app")
+                 || host.hasSuffix("firebaseapp.com"))
+        }
+
+        private func syncSubAppState(for url: URL?) {
+            let host = (url?.host ?? "").lowercased()
+            let onSubApp = host.hasSuffix("frostyrips-stadium.web.app") || host.hasSuffix("frostyrips-presale.web.app")
+            DispatchQueue.main.async {
+                self.parent.showBackToPacks = onSubApp
+            }
+        }
+
+        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+            syncSubAppState(for: webView.url)
+        }
+
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            syncSubAppState(for: webView.url)
             DispatchQueue.main.async {
                 self.parent.isLoading = false
                 self.parent.loadFailed = false
@@ -94,11 +124,28 @@ struct FrostyWebView: UIViewRepresentable {
 
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
             let nsErr = error as NSError
-            if nsErr.code == NSURLErrorCancelled { return }
+            if nsErr.code == NSURLErrorCancelled || nsErr.code == 102 { return }
             DispatchQueue.main.async {
                 self.parent.isLoading = false
                 self.parent.loadFailed = true
             }
+        }
+
+        func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            // Auto-recover if iOS terminates WebContent under heavy 3D WebGL memory pressure
+            webView.reload()
+        }
+
+        // Fix target="_blank" links (Presale, Fullscreen Stadium, external wallets) on iOS WKWebView
+        func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+            if let target = navigationAction.request.url {
+                if isFirstParty(target) {
+                    webView.load(URLRequest(url: target))
+                } else {
+                    UIApplication.shared.open(target)
+                }
+            }
+            return nil
         }
 
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -121,11 +168,7 @@ struct FrostyWebView: UIViewRepresentable {
                 return
             }
 
-            if (scheme == "https" || scheme == "http") &&
-                (host.hasSuffix("frostrips.web.app")
-                 || host.hasSuffix("frostyrips-stadium.web.app")
-                 || host.hasSuffix("frostyrips-presale.web.app")
-                 || host.hasSuffix("firebaseapp.com")) {
+            if isFirstParty(target) {
                 decisionHandler(.allow)
                 return
             }

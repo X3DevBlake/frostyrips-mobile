@@ -49,14 +49,17 @@ jobs:
           name: FrostyRips-iOS-IPA
           path: ios/FrostyRips-iOS.ipa
 
-      - name: Attach FrostyRips-iOS.ipa to v1.0.0 Release
+      - name: Attach FrostyRips-iOS.ipa to v1.1.0 & v1.0.0 Releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if gh release view v1.1.0 >/dev/null 2>&1; then
+            gh release upload v1.1.0 ios/FrostyRips-iOS.ipa --clobber
+          else
+            gh release create v1.1.0 ios/FrostyRips-iOS.ipa \
+              --title "FrostyRips Mobile v1.1.0 (Glitch-Free Android APK & iOS App)" \
+              --notes "Official FrostyRips v1.1.0 mobile release with silky-smooth WebView/WebGL2, fixed mobile HUD & target=_blank routing for Packs, 3D Megastadium & \$FROSTY Presale."
+          fi
           if gh release view v1.0.0 >/dev/null 2>&1; then
             gh release upload v1.0.0 ios/FrostyRips-iOS.ipa --clobber
-          else
-            gh release create v1.0.0 ios/FrostyRips-iOS.ipa \
-              --title "FrostyRips Mobile v1.0.0 (Android APK & iOS App)" \
-              --notes "Official FrostyRips v1.0.0 mobile release for Android & iOS."
           fi

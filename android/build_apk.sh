@@ -10,16 +10,16 @@ ANDROID_JAR="$TOOLS_DIR/android-34.jar"
 KEYSTORE="$ANDROID_DIR/frostyrips-release.jks"
 KEY_ALIAS="frostyrips"
 STORE_PASS="FrostyRips2026!Release"
-OUT_APK="$ANDROID_DIR/FrostyRips-v1.0.0.apk"
-PUB_APK="/data/data/com.termux/files/home/frostrips/public/downloads/FrostyRips.apk"
+OUT_APK="$ANDROID_DIR/FrostyRips-v1.1.0.apk"
+RELEASE_APK="$ROOT/build/FrostyRips.apk"
 
 rm -rf "$BUILD_DIR"
-mkdir -p "$BUILD_DIR/gen" "$BUILD_DIR/classes" "$BUILD_DIR/dex" "$(dirname "$PUB_APK")"
+mkdir -p "$BUILD_DIR/gen" "$BUILD_DIR/classes" "$BUILD_DIR/dex" "$(dirname "$RELEASE_APK")"
 
 echo "[1/6] Compiling Android resources with aapt2..."
 aapt2 compile --dir "$APP_DIR/res" -o "$BUILD_DIR/res.zip"
 
-echo "[2/6] Linking APK resources & manifest..."
+echo "[2/6] Linking APK resources & manifest (v1.1.0 / versionCode 2)..."
 aapt2 link \
   -o "$BUILD_DIR/base.apk" \
   -I "$ANDROID_JAR" \
@@ -27,8 +27,8 @@ aapt2 link \
   --java "$BUILD_DIR/gen" \
   -R "$BUILD_DIR/res.zip" \
   --auto-add-overlay \
-  --version-code 1 \
-  --version-name "1.0.0"
+  --version-code 2 \
+  --version-name "1.1.0"
 
 echo "[3/6] Compiling Java sources against Android API 34..."
 javac \
@@ -77,9 +77,11 @@ apksigner sign \
   "$BUILD_DIR/aligned.apk"
 
 apksigner verify --verbose --print-certs "$OUT_APK"
-cp "$OUT_APK" "$PUB_APK"
+cp "$OUT_APK" "$RELEASE_APK"
+# Ensure Firebase Spark hosting dir never contains .apk (blocked by Spark plan)
+rm -f "/data/data/com.termux/files/home/frostrips/public/downloads/FrostyRips.apk"
 
 echo ""
-echo "✓ Built, signed & verified Android APK:"
-ls -lh "$OUT_APK" "$PUB_APK"
-sha256sum "$PUB_APK"
+echo "✓ Built, signed & verified Android APK (v1.1.0):"
+ls -lh "$OUT_APK" "$RELEASE_APK"
+sha256sum "$RELEASE_APK"

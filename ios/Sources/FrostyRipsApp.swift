@@ -17,13 +17,15 @@ struct FrostyRipsApp: App {
 }
 
 final class FrostyAppRouter: ObservableObject {
-    static let packsURL = URL(string: "https://frostrips.web.app/?app=ios&v=1.0.0")!
-    static let stadiumURL = URL(string: "https://frostyrips-stadium.web.app/?app=ios&v=1.0.0")!
-    static let presaleURL = URL(string: "https://frostyrips-presale.web.app/?app=ios&v=1.0.0")!
+    static let appVersion = "1.1.0"
+    static let packsURL = URL(string: "https://frostrips.web.app/?app=ios&v=1.1.0")!
+    static let stadiumURL = URL(string: "https://frostyrips-stadium.web.app/?app=ios&v=1.1.0")!
+    static let presaleURL = URL(string: "https://frostyrips-presale.web.app/?app=ios&v=1.1.0")!
 
     @Published var currentURL: URL = FrostyAppRouter.packsURL
     @Published var isLoading: Bool = true
     @Published var loadFailed: Bool = false
+    @Published var showBackToPacks: Bool = false
 
     func handleDeepLink(_ url: URL) {
         if url.scheme?.lowercased() == "frostyrips" {
@@ -39,6 +41,7 @@ final class FrostyAppRouter: ObservableObject {
             var comps = URLComponents(string: "https://frostrips.web.app\(path)")
             var items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
             items.append(URLQueryItem(name: "app", value: "ios"))
+            items.append(URLQueryItem(name: "v", value: Self.appVersion))
             comps?.queryItems = items
             if let resolved = comps?.url {
                 currentURL = resolved
@@ -59,7 +62,7 @@ struct FrostyRootView: View {
     @State private var reloadToken = UUID()
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             Color(red: 5/255, green: 10/255, blue: 22/255)
                 .ignoresSafeArea()
 
@@ -67,13 +70,39 @@ struct FrostyRootView: View {
                 url: router.currentURL,
                 reloadToken: reloadToken,
                 isLoading: $router.isLoading,
-                loadFailed: $router.loadFailed
+                loadFailed: $router.loadFailed,
+                showBackToPacks: $router.showBackToPacks
             )
             .ignoresSafeArea(edges: .bottom)
 
+            if router.showBackToPacks {
+                Button {
+                    router.currentURL = FrostyAppRouter.packsURL
+                    reloadToken = UUID()
+                } label: {
+                    Text("← PACKS")
+                        .font(.system(size: 12, weight: .black, design: .rounded))
+                        .tracking(0.8)
+                        .foregroundColor(Color(red: 4/255, green: 21/255, blue: 33/255))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            LinearGradient(
+                                colors: [Color(red: 0/255, green: 255/255, blue: 247/255), Color(red: 56/255, green: 189/255, blue: 248/255)],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .clipShape(Capsule())
+                        .shadow(color: Color.black.opacity(0.45), radius: 6, y: 2)
+                }
+                .padding(.top, 8)
+                .padding(.leading, 12)
+            }
+
             if router.isLoading {
                 FrostySplashView()
-                    .transition(.opacity.animation(.easeOut(duration: 0.3)))
+                    .transition(.opacity.animation(.easeOut(duration: 0.28)))
             }
 
             if router.loadFailed {
@@ -110,6 +139,14 @@ struct FrostyRootView: View {
                 .background(Color(red: 5/255, green: 10/255, blue: 22/255).ignoresSafeArea())
             }
         }
+        .onAppear {
+            // Failsafe: never hang on splash screen even on slow cellular connections
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                if router.isLoading {
+                    router.isLoading = false
+                }
+            }
+        }
     }
 }
 
@@ -140,9 +177,9 @@ struct FrostySplashView: View {
                     .tracking(4)
                     .foregroundColor(Color(red: 255/255, green: 229/255, blue: 0/255))
 
-                Text("FOIL PACKS  •  FREE VAULT  •  3D STADIUM")
+                Text("FOIL PACKS  •  $FROSTY PRESALE  •  3D STADIUM")
                     .font(.system(size: 11, weight: .bold))
-                    .tracking(2)
+                    .tracking(1.6)
                     .foregroundColor(Color(red: 125/255, green: 211/255, blue: 252/255))
 
                 ProgressView()
