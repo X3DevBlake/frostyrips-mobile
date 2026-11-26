@@ -1,163 +1,150 @@
 <div align="center">
 
 <a href="https://frostrips.web.app/ad/landing/app">
-  <img src="docs/media/00-hero-banner.png" alt="FrostyRips Mobile — Get a Free Foil Pack on iOS & Android" width="100%" />
+  <img src="docs/media/00-hero-banner.png" alt="FrostyRips — Free Foil Pack, $FROSTY Presale & 3D Megastadium" width="100%" />
 </a>
 
-# ❄️ FrostyRips Mobile — Android APK & iOS App
+# ❄️ FrostyRips
 
-**Real graded TCG cards in every foil pack • Instant 90% FMV buyback • $0 vaulting forever • Real-Time 3D Megastadium Coliseum • Live `$FROSTY` Presale**
+**42 Graded Foil Packs · 90% Instant Buyback · Live `$FROSTY` Presale · Real-Time 3D Megastadium**
 
-[![Download Android APK](https://img.shields.io/badge/Android_APK-Download_v1.0.0-00e5ff?style=for-the-badge&logo=android&logoColor=041c24)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips.apk)
-[![Download iOS IPA](https://img.shields.io/badge/iOS_IPA-Download_v1.0.0-ffe500?style=for-the-badge&logo=apple&logoColor=0b1220)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)
-[![Install iOS Profile](https://img.shields.io/badge/iOS_1--Tap-Install_Profile-38bdf8?style=for-the-badge&logo=safari&logoColor=041c24)](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)
-[![App Download Page](https://img.shields.io/badge/App_Landing-Claim_Free_Pack-04ff00?style=for-the-badge&logo=googlechrome&logoColor=041c24)](https://frostrips.web.app/ad/landing/app)
+[![Download Android APK v1.1.0](https://img.shields.io/badge/Android_APK-Download_v1.1.0-00e5ff?style=for-the-badge&logo=android&logoColor=041c24)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips.apk)
+[![Download iOS IPA](https://img.shields.io/badge/iOS_IPA-Download_App-ffe500?style=for-the-badge&logo=apple&logoColor=0b1220)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips-iOS.ipa)
+[![iOS 1-Tap Install](https://img.shields.io/badge/iOS_1--Tap-Install_Profile-38bdf8?style=for-the-badge&logo=safari&logoColor=041c24)](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)
+[![App Download Page](https://img.shields.io/badge/Free_Foil_Pack-App_Landing-04ff00?style=for-the-badge&logo=googlechrome&logoColor=041c24)](https://frostrips.web.app/ad/landing/app)
 
-[![$FROSTY Presale LIVE](https://img.shields.io/badge/%24FROSTY_PRESALE-LIVE_+5%25_EARLY--BIRD_BONUS-ffbe00?style=for-the-badge&logo=ethereum&logoColor=0b1220)](https://frostyrips-presale.web.app)
-[![FrostyRips Pack Store](https://img.shields.io/badge/Foil_Packs-Open_Store-00b8d4?style=for-the-badge&logo=sparkles&logoColor=ffffff)](https://frostrips.web.app)
-[![3D Megastadium](https://img.shields.io/badge/3D_Megastadium-27%2C014_Fighters-f941b1?style=for-the-badge&logo=three.js&logoColor=ffffff)](https://frostyrips-stadium.web.app)
+[![$FROSTY Presale LIVE](https://img.shields.io/badge/%24FROSTY_PRESALE-LIVE_+5%25_BONUS-ffbe00?style=for-the-badge&logo=ethereum&logoColor=0b1220)](https://frostyrips-presale.web.app)
+[![Official Pack Store](https://img.shields.io/badge/Official_Website-42_Foil_Packs-00b8d4?style=for-the-badge&logo=sparkles&logoColor=ffffff)](https://frostrips.web.app)
+[![3D Megastadium](https://img.shields.io/badge/3D_Megastadium-Play_Free_3D-f941b1?style=for-the-badge&logo=three.js&logoColor=ffffff)](https://frostyrips-stadium.web.app)
 
 </div>
 
 ---
 
-## 🔗 Official FrostyRips Ecosystem Links
-
-| Platform / Resource | Direct Live URL | Highlights |
-| :--- | :--- | :--- |
-| **🚀 `$FROSTY` Token Presale** | **[https://frostyrips-presale.web.app](https://frostyrips-presale.web.app)** | **Early-Bird Presale OPEN (+5% Bonus)** • 10% OFF packs • 50% pack burn • ETH, SOL & BNB |
-| **📱 App Download Landing Page** | **[https://frostrips.web.app/ad/landing/app](https://frostrips.web.app/ad/landing/app)** | Claim a free foil pack • Instant QR & dual-platform installer |
-| **🤖 Signed Android APK (`v1.0.0`)** | **[Download `FrostyRips.apk`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips.apk)** | RSA-2048 v2+v3 signed (`com.frostyrips.app`, Android 7.0–14+) |
-| **🍎 Compiled Native iOS `.ipa` (`v1.0.0`)** | **[Download `FrostyRips-iOS.ipa`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)** | Compiled ARM64 SwiftUI + `WKWebView` binary (AltStore / SideStore / Sideloadly) |
-| **📲 iOS 1-Tap App Profile** | **[Install `FrostyRips-iOS.mobileconfig`](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)** | Standalone full-screen Home Screen app on iPhone & iPad (no computer needed) |
-| **📦 Native SwiftUI Xcode Project** | **[Download `FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** | SwiftUI + `WKWebView` + Core Haptics + `XcodeGen` `.ipa` CI |
-| **🎴 FrostyRips Foil Pack Store** | **[https://frostrips.web.app](https://frostrips.web.app)** | 42 liquid-chrome packs • 25,000+ graded cards • 90% instant buyback |
-| **🏟️ 3D Megastadium Arena** | **[https://frostyrips-stadium.web.app](https://frostyrips-stadium.web.app)** | Real-time 3D coliseum combat • 27,014 fighters • 6 PBR stage maps |
-
----
-
-## 🎬 Video Walkthrough (HD 720p + Audio)
+## 📱 Mobile App & Foil Pack Ripping (`v1.1.0`)
 
 <div align="center">
 
-<a href="https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/frostyrips-demo.mp4">
-  <img src="docs/media/frostyrips-demo.gif" alt="FrostyRips Mobile App, Pack Store, 3D Megastadium & $FROSTY Presale Video Walkthrough" width="100%" />
+<a href="https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-app-demo.mp4">
+  <img src="docs/media/frostyrips-app-demo.gif" alt="FrostyRips Mobile App & Foil Pack Ripping Video" width="100%" />
 </a>
 
-**[▶ Watch / Download Full HD MP4 Walkthrough with Blizzard Soundtrack (`frostyrips-demo.mp4` • 1280×720 30fps)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/frostyrips-demo.mp4)** · [View in Repo (`docs/media/frostyrips-demo.mp4`)](docs/media/frostyrips-demo.mp4)
+**[▶ Watch HD Video (`frostyrips-app-demo.mp4` • 720p30 + Audio)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-app-demo.mp4)** · **[📱 Open App Download Page](https://frostrips.web.app/ad/landing/app)** · **[🤖 Download Fixed APK `v1.1.0`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips.apk)**
 
 </div>
 
-> **Featured in the video:** Live scroll through the FrostyRips App Download Landing Page, 4 native mobile app screens (Pack Ripping, 90% Instant Buyback, 3D Megastadium, Daily Rewards), live Foil Pack Store, 3D Megastadium Coliseum, and the live `$FROSTY` Token Presale Portal.
+| App Download Hero | Presale · Store · 3D Stadium Section |
+| :---: | :---: |
+| <img src="docs/media/01-app-landing-desktop.png" alt="FrostyRips App Download Hero" width="460" /> | <img src="docs/media/01b-app-landing-ecosystem.png" alt="FrostyRips Universe: Presale, Pack Store & 3D Megastadium" width="460" /> |
+
+| Fixed Live App (`v1.1.0`) | Foil Packs | 90% Buyback | 3D Stadium | Rewards |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="docs/media/02b-mobile-app-live.png" alt="FrostyRips Fixed Live Mobile App v1.1.0" width="170" /> | <img src="docs/media/screen-packs.png" alt="FrostyRips Packs Screen" width="170" /> | <img src="docs/media/screen-pull.png" alt="FrostyRips Pull & Buyback Screen" width="170" /> | <img src="docs/media/screen-stadium.png" alt="FrostyRips 3D Stadium Mobile Screen" width="170" /> | <img src="docs/media/screen-rewards.png" alt="FrostyRips Rewards Screen" width="170" /> |
 
 ---
 
 ## 🪙 `$FROSTY` Token Presale — LIVE NOW
 
-> ### 👉 Join the Official `$FROSTY` Presale: **[https://frostyrips-presale.web.app](https://frostyrips-presale.web.app)**
-
 <div align="center">
-  <a href="https://frostyrips-presale.web.app">
-    <img src="docs/media/04-presale-portal.png" alt="FrostyRips $FROSTY Token Presale Portal" width="100%" />
-  </a>
+
+<a href="https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-presale-video.mp4">
+  <img src="docs/media/frostyrips-presale-video.gif" alt="$FROSTY Token Presale Official Video" width="100%" />
+</a>
+
+**[▶ Watch HD Presale Video (`frostyrips-presale-video.mp4`)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-presale-video.mp4)** · **[🚀 Join `$FROSTY` Presale (+5% Early-Bird Bonus) → `frostyrips-presale.web.app`](https://frostyrips-presale.web.app)**
+
 </div>
 
-- **Early-Bird Tier Bonus:** **+5% bonus `$FROSTY`** live now at [frostyrips-presale.web.app](https://frostyrips-presale.web.app)
-- **Supply & Network:** **10,000,000,000** fixed supply (`$FROSTY`, Ethereum Mainnet)
-- **Multi-Chain Contributions:** ETH, USDT, USDC, WBTC, DAI, LINK, UNI, **SOL**, and **BNB**
-- **Utility Built Into FrostyRips:**
-  - **10% OFF** all digital & physical foil pack rips when paying in `$FROSTY`
-  - **50% Permanent Pack Burn** mechanism tied directly to FrostyRips pack volume
-  - **+10% Referral Rewards** paid on friend invites via the mobile app & presale portal
+| Presale Portal (`+5% Bonus`) | Multi-Chain Buy (`ETH · SOL · BNB`) | Tokenomics & `50% Pack Burn` |
+| :---: | :---: | :---: |
+| <img src="docs/media/04-presale-portal.png" alt="$FROSTY Presale Portal Hero" width="300" /> | <img src="docs/media/04b-presale-tokenomics.png" alt="$FROSTY Multi-Chain Buy Widget" width="300" /> | <img src="docs/media/04c-presale-roadmap.png" alt="$FROSTY Tokenomics & 50% Pack Burn Graph" width="300" /> |
 
 ---
 
-## 📸 Live Screenshots
+## ⚔️ 3D Megastadium — Live 3D Coliseum Battles
 
-### App Download Landing Page (Desktop & Mobile)
+<div align="center">
 
-| Desktop App Landing (`frostrips.web.app/ad/landing/app`) | Mobile App Landing (iPhone / Android) |
-| :---: | :---: |
-| <img src="docs/media/01-app-landing-desktop.png" alt="FrostyRips App Download Landing Page Desktop" width="660" /> | <img src="docs/media/02-app-landing-mobile.png" alt="FrostyRips App Download Landing Page Mobile" width="230" /> |
+<a href="https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-stadium-battle.mp4">
+  <img src="docs/media/frostyrips-stadium-battle.gif" alt="FrostyRips 3D Megastadium Live Battle Video" width="100%" />
+</a>
 
-### Inside the FrostyRips Mobile App
+**[▶ Watch HD 3D Battle Video (`frostyrips-stadium-battle.mp4`)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/frostyrips-stadium-battle.mp4)** · **[🏟️ Play 3D Megastadium Free → `frostyrips-stadium.web.app`](https://frostyrips-stadium.web.app)**
 
-| Foil Packs Store | Mythic Pull & 90% Buyback | 3D Megastadium Arena | Daily Rewards & Invites |
-| :---: | :---: | :---: | :---: |
-| <img src="docs/media/screen-packs.png" alt="FrostyRips Mobile Packs Store" width="210" /> | <img src="docs/media/screen-pull.png" alt="FrostyRips Card Pull & 90% Instant Buyback" width="210" /> | <img src="docs/media/screen-stadium.png" alt="FrostyRips 3D Megastadium Mobile Battle" width="210" /> | <img src="docs/media/screen-rewards.png" alt="FrostyRips Daily Rewards & Referrals" width="210" /> |
+</div>
 
-### Live Foil Pack Store & 3D Megastadium Coliseum
+| 3D Squad Waiting Lobby | 27,014 Fighters & 3D Pokémon GLBs | Grand Champions Megadome |
+| :---: | :---: | :---: |
+| <img src="docs/media/05b-megastadium-lobby.png" alt="3D Megastadium Squad Waiting Lobby" width="300" /> | <img src="docs/media/05c-megastadium-roster.png" alt="3D Megastadium 27,014 Fighter & Pokémon GLB Locker" width="300" /> | <img src="docs/media/05d-megastadium-battle-1.png" alt="3D Megastadium Live Coliseum Battle" width="300" /> |
 
-| FrostyRips Foil Pack Store (`frostrips.web.app`) | 3D Megastadium Coliseum (`frostyrips-stadium.web.app`) |
-| :---: | :---: |
-| <img src="docs/media/03-packs-store.png" alt="FrostyRips Live Foil Pack Store" width="460" /> | <img src="docs/media/05-megastadium-3d.png" alt="FrostyRips 3D Megastadium Live Coliseum" width="460" /> |
+| Live 3D Combo & Rune Clash | Glacier Titan Coliseum FX | Cyber Neon Overwatch |
+| :---: | :---: | :---: |
+| <img src="docs/media/05e-megastadium-battle-2.png" alt="3D Megastadium Melee & Rune Clash" width="300" /> | <img src="docs/media/05f-megastadium-battle-3.png" alt="Glacier Titan Coliseum Elemental Blast & FX" width="300" /> | <img src="docs/media/05g-megastadium-battle-4.png" alt="Cyber Neon Overwatch 3D Arena Battle" width="300" /> |
+
+---
+
+## 🎴 Official Website & 42 Graded Foil Packs
+
+| 3D Foil Pack Coverflow | All 42 Mystery Packs | Live 5-Card Graded Pull (`90% Buyback`) |
+| :---: | :---: | :---: |
+| <img src="docs/media/03-packs-store.png" alt="FrostyRips 3D Foil Pack Store" width="300" /> | <img src="docs/media/03b-packs-catalog-42.png" alt="All 42 FrostyRips Mystery Packs" width="300" /> | <img src="docs/media/03c-pack-pull-reveal.png" alt="Live 5-Card Graded Foil Pack Pull Reveal" width="300" /> |
+
+<div align="center">
+
+**[🎴 Open Official Pack Store → `frostrips.web.app`](https://frostrips.web.app)**
+
+</div>
 
 ---
 
-## 📲 Installation Guide
+<details>
+<summary><b>📲 Install Guide (Android APK v1.1.0 &amp; iOS App) + What's Fixed in v1.1.0</b></summary>
 
-### 🤖 Android (Direct Signed APK — Ready Now)
-1. Download the signed release APK: **[`FrostyRips.apk` (v1.0.0)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips.apk)** (or from [`android/FrostyRips-v1.0.0.apk`](android/FrostyRips-v1.0.0.apk)).
-2. Open the downloaded `.apk` and enable **Install unknown apps** for your browser if prompted.
-3. Launch **FrostyRips** from your Home Screen and claim your free starter foil pack!
+### What's Fixed in `v1.1.0`
+- **Zero mobile layout clipping or overflow:** Fixed topbar overflow (`620px → 412px`), un-truncated balance display, clean 1-row category bar, and repositioned Prize Wheel so nothing overlaps.
+- **Zero WebView flicker or freeze:** Removed forced software/hardware layer mismatch on Android, added WebGL render-process crash auto-recovery on Android & iOS, locked text scaling (`100%`), and eliminated false offline flashes.
+- **Full multi-site support inside the app:** Seamless navigation & `target="_blank"` handling across Pack Store (`frostrips.web.app`), `$FROSTY` Presale (`frostyrips-presale.web.app`), and 3D Megastadium (`frostyrips-stadium.web.app`), with a floating **`← PACKS`** return pill.
+- **Smoother mobile FPS:** Mobile DPR cap, reduced background canvas particle cost, and automatic canvas pause during pack rips & 3D battles.
 
-**APK Verification Details:**
-- **Package ID:** `com.frostyrips.app`
-- **Version:** `1.0.0` (`versionCode 1`) • `minSdk 24` (Android 7.0+) • `targetSdk 34`
-- **Signing:** 4-byte aligned, RSA-2048 v2 + v3 APK Signature Scheme verified with `apksigner`
-- **SHA-256:** `4064f70947ad80549e6c787fa6d6869c672001cb1661d1db7f6f7927d529de6b`
-
----
+### 🤖 Android (Direct Signed APK `v1.1.0`)
+1. Download **[`FrostyRips.apk` (`v1.1.0`)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips.apk)**.
+2. Open the file and allow **Install unknown apps** if prompted.
+3. Package: `com.frostyrips.app` · `versionCode 2` · Android 7.0–14+ · RSA-2048 v2+v3 signed.
+4. **SHA-256:** `85d9755667db73c5072b0bb819fb2f0dc9ac1729f0418f4af27d14e333d1cc01`
 
 ### 🍎 iOS (iPhone & iPad)
+- **Option 1 — 1-Tap Home Screen App (No Computer):** Open Safari and tap **[`FrostyRips-iOS.mobileconfig`](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)** → **Settings → Profile Downloaded → Install**.
+- **Option 2 — Compiled Native `.ipa` (AltStore / SideStore / Sideloadly):** Download **[`FrostyRips-iOS.ipa`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips-iOS.ipa)** (`SHA-256: ed0d27bde4adc3678a8a47e2900c84bdb0be5b9f51473ae0f81fda947c3841a5`).
+- **Option 3 — Xcode SwiftUI Source (`v1.1.0`):** Download **[`FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** or build [`ios/`](ios/) with `xcodegen generate`.
 
-#### Option A — 1-Tap Direct Home Screen App Profile (No Mac / No App Store Needed)
-1. Open Safari on your iPhone or iPad and tap **[Install FrostyRips iOS Profile](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)**.
-2. Tap **Allow** to download the Apple configuration profile (`FrostyRips-iOS.mobileconfig`).
-3. Open **Settings → Profile Downloaded → Install** to add the standalone full-screen **FrostyRips** app directly to your Home Screen.
+</details>
 
-#### Option B — Install Compiled Native iOS `.ipa` (AltStore / SideStore / Sideloadly / TrollStore)
-1. Download the compiled ARM64 iOS app package: **[`FrostyRips-iOS.ipa` (v1.0.0 • 2.8 MB)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)**.
-2. Sideload with **AltStore**, **SideStore**, **Sideloadly**, **TrollStore**, or resign with your Apple Developer certificate / MDM.
-3. **SHA-256:** `ed0d27bde4adc3678a8a47e2900c84bdb0be5b9f51473ae0f81fda947c3841a5`
+<details>
+<summary><b>🔗 All Direct Ecosystem Links &amp; Repository Structure</b></summary>
 
-#### Option C — Build Signed `.ipa` from SwiftUI Source in Xcode
-1. Download **[`FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** or clone this repo and open [`ios/`](ios/) on macOS with Xcode 15+.
-2. Run `xcodegen generate` using [`ios/project.yml`](ios/project.yml) (or trigger the automated macOS CI workflow [`.github/workflows/build-ios-ipa.yml`](.github/workflows/build-ios-ipa.yml)).
-3. Select your Apple Developer Team in **Signing & Capabilities** and Archive for device deployment, TestFlight, or App Store Connect.
-
----
-
-## 🏗️ Repository Architecture
+| Resource | Live Link |
+| :--- | :--- |
+| **App Download Landing Page** | [https://frostrips.web.app/ad/landing/app](https://frostrips.web.app/ad/landing/app) |
+| **`$FROSTY` Token Presale** | [https://frostyrips-presale.web.app](https://frostyrips-presale.web.app) |
+| **Official Foil Pack Store** | [https://frostrips.web.app](https://frostrips.web.app) |
+| **3D Megastadium Coliseum** | [https://frostyrips-stadium.web.app](https://frostyrips-stadium.web.app) |
+| **Android APK (`v1.1.0`)** | [Download `FrostyRips.apk`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips.apk) |
+| **iOS `.ipa` + 1-Tap Profile** | [Download `FrostyRips-iOS.ipa`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.1.0/FrostyRips-iOS.ipa) · [`FrostyRips-iOS.mobileconfig`](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig) |
 
 ```text
 frostyrips-mobile/
-├── android/                     # Native Android project (com.frostyrips.app) + signed release APK
-│   ├── src/com/frostyrips/app/  # MainActivity.java (WebGL2 WebView, FrostyNative JS bridge, deep links)
-│   ├── res/                     # Adaptive mipmap icons (mdpi–xxxhdpi), splash, theme, network config
-│   └── FrostyRips-v1.0.0.apk    # Signed & zipaligned production Android APK
-├── .github/workflows/
-│   └── build-ios-ipa.yml        # Automated macOS GitHub Actions workflow compiling FrostyRips-iOS.ipa
-├── ios/                         # Native SwiftUI + WKWebView iOS app (iOS 15+)
-│   ├── Sources/                 # FrostyRipsApp.swift, FrostyWebView.swift (Core Haptics, Share & Presale bridge)
-│   ├── Resources/               # Info.plist, FrostyRips.entitlements, Assets.xcassets (AppIcon + SplashIcon)
-│   ├── project.yml              # XcodeGen specification for instant .xcodeproj / .ipa generation
-│   └── FrostyRips-iOS.mobileconfig # Direct 1-tap iOS WebClip installation profile
-├── docs/media/                  # Real live screenshots, mobile app mockups, HD MP4 & animated GIF
-└── tools/make_demo_video.py     # Reproducible 720p30 H.264 + AAC walkthrough video generator
+├── android/    # Native Android WebGL2 WebView app (v1.1.0)
+├── ios/        # Native SwiftUI + WKWebView iOS app (v1.1.0) + 1-tap .mobileconfig
+├── docs/media/ # Live screenshots & compact auto-playing GIF previews
+└── tools/      # Automated capture & HD MP4/GIF rendering pipeline
 ```
 
-**Native Mobile Capabilities (`window.FrostyNative` Bridge):**
-- Hardware-accelerated WebGL2 rendering for **3D Megastadium** & liquid-chrome pack physics
-- Native haptic feedback (Android `VibrationEffect` / iOS `UIImpactFeedbackGenerator`)
-- Native OS Share Sheet for referral links (`?ref=CODE`) & pull bragging
-- Deep link routing for `frostyrips://`, `https://frostrips.web.app`, `https://frostyrips-stadium.web.app`, and `https://frostyrips-presale.web.app`
-- Built-in dark arctic splash overlay & offline reconnect screen
+</details>
 
 ---
 
 <div align="center">
 
-**❄️ Ready to Rip? [Download FrostyRips](https://frostrips.web.app/ad/landing/app) · [Join `$FROSTY` Presale](https://frostyrips-presale.web.app) · [Enter 3D Megastadium](https://frostyrips-stadium.web.app)**
+**[📱 Get the App](https://frostrips.web.app/ad/landing/app)** · **[🪙 Join `$FROSTY` Presale](https://frostyrips-presale.web.app)** · **[🎴 Open Pack Store](https://frostrips.web.app)** · **[⚔️ Enter 3D Megastadium](https://frostyrips-stadium.web.app)**
 
 </div>
