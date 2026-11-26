@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="frosty_bg">#050A16</color>
+    <color name="frosty_cyan">#00E5FF</color>
+    <color name="frosty_gold">#FFE500</color>
+    <color name="frosty_surface">#0B152B</color>
+</resources>

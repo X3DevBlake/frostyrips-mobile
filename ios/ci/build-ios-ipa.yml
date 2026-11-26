@@ -1,0 +1,60 @@
+name: Build FrostyRips iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Build Native ARM64 iOS App & Package .ipa
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -project FrostyRips.xcodeproj \
+            -scheme FrostyRips \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            build
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/FrostyRips.app Payload/
+          zip -r -9 FrostyRips-iOS.ipa Payload
+          ls -lh FrostyRips-iOS.ipa
+
+      - name: Upload FrostyRips-iOS.ipa Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FrostyRips-iOS-IPA
+          path: ios/FrostyRips-iOS.ipa
+
+      - name: Attach FrostyRips-iOS.ipa to v1.0.0 Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            gh release upload v1.0.0 ios/FrostyRips-iOS.ipa --clobber
+          else
+            gh release create v1.0.0 ios/FrostyRips-iOS.ipa \
+              --title "FrostyRips Mobile v1.0.0 (Android APK & iOS App)" \
+              --notes "Official FrostyRips v1.0.0 mobile release for Android & iOS."
+          fi

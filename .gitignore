@@ -1,0 +1,18 @@
+# Private signing keystores (NEVER commit)
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+
+# Build artifacts & SDK jars
+build/
+android/build/
+ios/build/
+ios/Payload/
+ios/*.xcodeproj/
+tools/android-*.jar
+*.apk
+*.ipa
+.DS_Store
+__pycache__/
+*.idsig
