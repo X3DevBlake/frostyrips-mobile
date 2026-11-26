@@ -9,7 +9,8 @@
 **Real graded TCG cards in every foil pack • Instant 90% FMV buyback • $0 vaulting forever • Real-Time 3D Megastadium Coliseum • Live `$FROSTY` Presale**
 
 [![Download Android APK](https://img.shields.io/badge/Android_APK-Download_v1.0.0-00e5ff?style=for-the-badge&logo=android&logoColor=041c24)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips.apk)
-[![Install iOS App](https://img.shields.io/badge/iOS_App-1--Tap_Profile-ffe500?style=for-the-badge&logo=apple&logoColor=0b1220)](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)
+[![Download iOS IPA](https://img.shields.io/badge/iOS_IPA-Download_v1.0.0-ffe500?style=for-the-badge&logo=apple&logoColor=0b1220)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)
+[![Install iOS Profile](https://img.shields.io/badge/iOS_1--Tap-Install_Profile-38bdf8?style=for-the-badge&logo=safari&logoColor=041c24)](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)
 [![App Download Page](https://img.shields.io/badge/App_Landing-Claim_Free_Pack-04ff00?style=for-the-badge&logo=googlechrome&logoColor=041c24)](https://frostrips.web.app/ad/landing/app)
 
 [![$FROSTY Presale LIVE](https://img.shields.io/badge/%24FROSTY_PRESALE-LIVE_+5%25_EARLY--BIRD_BONUS-ffbe00?style=for-the-badge&logo=ethereum&logoColor=0b1220)](https://frostyrips-presale.web.app)
@@ -27,7 +28,8 @@
 | **🚀 `$FROSTY` Token Presale** | **[https://frostyrips-presale.web.app](https://frostyrips-presale.web.app)** | **Early-Bird Presale OPEN (+5% Bonus)** • 10% OFF packs • 50% pack burn • ETH, SOL & BNB |
 | **📱 App Download Landing Page** | **[https://frostrips.web.app/ad/landing/app](https://frostrips.web.app/ad/landing/app)** | Claim a free foil pack • Instant QR & dual-platform installer |
 | **🤖 Signed Android APK (`v1.0.0`)** | **[Download `FrostyRips.apk`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips.apk)** | RSA-2048 v2+v3 signed (`com.frostyrips.app`, Android 7.0–14+) |
-| **🍎 iOS 1-Tap App Profile** | **[Install `FrostyRips-iOS.mobileconfig`](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)** | Standalone full-screen Home Screen app on iPhone & iPad |
+| **🍎 Compiled Native iOS `.ipa` (`v1.0.0`)** | **[Download `FrostyRips-iOS.ipa`](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)** | Compiled ARM64 SwiftUI + `WKWebView` binary (AltStore / SideStore / Sideloadly) |
+| **📲 iOS 1-Tap App Profile** | **[Install `FrostyRips-iOS.mobileconfig`](https://frostrips.web.app/downloads/FrostyRips-iOS.mobileconfig)** | Standalone full-screen Home Screen app on iPhone & iPad (no computer needed) |
 | **📦 Native SwiftUI Xcode Project** | **[Download `FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** | SwiftUI + `WKWebView` + Core Haptics + `XcodeGen` `.ipa` CI |
 | **🎴 FrostyRips Foil Pack Store** | **[https://frostrips.web.app](https://frostrips.web.app)** | 42 liquid-chrome packs • 25,000+ graded cards • 90% instant buyback |
 | **🏟️ 3D Megastadium Arena** | **[https://frostyrips-stadium.web.app](https://frostyrips-stadium.web.app)** | Real-time 3D coliseum combat • 27,014 fighters • 6 PBR stage maps |
@@ -114,7 +116,12 @@
 2. Tap **Allow** to download the Apple configuration profile (`FrostyRips-iOS.mobileconfig`).
 3. Open **Settings → Profile Downloaded → Install** to add the standalone full-screen **FrostyRips** app directly to your Home Screen.
 
-#### Option B — Native SwiftUI `.ipa` Build (Xcode / GitHub Actions macOS Runner)
+#### Option B — Install Compiled Native iOS `.ipa` (AltStore / SideStore / Sideloadly / TrollStore)
+1. Download the compiled ARM64 iOS app package: **[`FrostyRips-iOS.ipa` (v1.0.0 • 2.8 MB)](https://github.com/X3DevBlake/frostyrips-mobile/releases/download/v1.0.0/FrostyRips-iOS.ipa)**.
+2. Sideload with **AltStore**, **SideStore**, **Sideloadly**, **TrollStore**, or resign with your Apple Developer certificate / MDM.
+3. **SHA-256:** `ed0d27bde4adc3678a8a47e2900c84bdb0be5b9f51473ae0f81fda947c3841a5`
+
+#### Option C — Build Signed `.ipa` from SwiftUI Source in Xcode
 1. Download **[`FrostyRips-iOS-App.zip`](https://frostrips.web.app/downloads/FrostyRips-iOS-App.zip)** or clone this repo and open [`ios/`](ios/) on macOS with Xcode 15+.
 2. Run `xcodegen generate` using [`ios/project.yml`](ios/project.yml) (or trigger the automated macOS CI workflow [`.github/workflows/build-ios-ipa.yml`](.github/workflows/build-ios-ipa.yml)).
 3. Select your Apple Developer Team in **Signing & Capabilities** and Archive for device deployment, TestFlight, or App Store Connect.
