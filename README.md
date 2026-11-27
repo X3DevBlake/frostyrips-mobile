@@ -16,6 +16,7 @@
 [![$FROSTY Presale LIVE](https://img.shields.io/badge/%24FROSTY_PRESALE-LIVE_+5%25_BONUS-ffbe00?style=for-the-badge&logo=ethereum&logoColor=0b1220)](https://frostyrips-presale.web.app)
 [![Official Pack Store](https://img.shields.io/badge/Official_Website-42_Foil_Packs-00b8d4?style=for-the-badge&logo=sparkles&logoColor=ffffff)](https://frostrips.web.app)
 [![3D Megastadium](https://img.shields.io/badge/3D_Megastadium-Play_Free_3D-f941b1?style=for-the-badge&logo=three.js&logoColor=ffffff)](https://frostyrips-stadium.web.app)
+[![Join FrostyRips Discord](https://img.shields.io/badge/Discord-Join_FrostyRips-5865F2?style=for-the-badge&logo=discord&logoColor=ffffff)](https://discord.gg/d33t8bFb9M)
 
 </div>
 
@@ -92,6 +93,22 @@
 <div align="center">
 
 **[🎴 Open Official Pack Store → `frostrips.web.app`](https://frostrips.web.app)**
+
+</div>
+
+---
+
+## 💬 Official FrostyRips Discord Community
+
+<div align="center">
+
+<a href="https://discord.gg/d33t8bFb9M">
+  <img src="docs/media/discord-banner.png" alt="FrostyRips Official Discord Banner" width="100%" />
+</a>
+
+**[💬 Join Official FrostyRips Discord → `discord.gg/d33t8bFb9M`](https://discord.gg/d33t8bFb9M)** · **Freeze Sunday Drops** · **Frosty Ticket Rumbles** · **3D Stadium LFG** · **VIP Transfers**
+
+<img src="docs/media/discord-emotes.png" alt="FrostyRips 16 Custom Discord Emotes, SVGs and Icons" width="520" />
 
 </div>
 
